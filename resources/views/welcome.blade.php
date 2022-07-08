@@ -15,27 +15,7 @@
 </head>
 
 <body>
-    {!!livewire("App\Livewire\Components\Counter")!!}
-
-
-
-    @php
-    function getProperties($component){
-        $properties=[];
-        $class = new ReflectionClass($component);
-        foreach($class->getProperties(ReflectionProperty::IS_PUBLIC) as $eachProperty){
-        $properties[$eachProperty->getName()]=$eachProperty->getValue(new $component);
-        }
-        return $properties;
-    }
-
-    function livewire($component){
-        $class=new $component;
-        return Blade::render($class->render(),
-        getProperties($component)
-        );
-    }
-    @endphp
+    @livewire("App\Livewire\Components\Counter")
 </body>
 
 </html>
