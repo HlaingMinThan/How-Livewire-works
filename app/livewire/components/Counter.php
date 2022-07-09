@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Components;
 
-class Counter
+use App\Livewire;
+
+class Counter extends Livewire
 {
     public $count = 8;
     public $fee = 'price';
@@ -10,10 +12,5 @@ class Counter
     public function increment()
     {
         $this->count++;
-    }
-
-    public function render()
-    {
-        return '<h1>{{$count}} {{$fee}}</h1> <button wire:click="increment">increment</button> <input type="text">';
     }
 }
