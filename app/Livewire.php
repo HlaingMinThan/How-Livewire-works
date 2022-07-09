@@ -21,9 +21,16 @@ class Livewire
     public function initialRender($component)
     {
         $class = new $component;
-        return Blade::render(
+        $html = Blade::render(
             $class->render(),
             $this->getProperties($component)
         );
+        $data = ['class' => get_class($class), 'data' => $this->getProperties($component)];
+        $data = json_encode($data);
+        return "
+            <div wire:snapshot='$data'>
+                {$html}
+            </div>
+        ";
     }
 }

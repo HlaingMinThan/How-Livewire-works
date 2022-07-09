@@ -16,6 +16,16 @@
 
 <body>
     @livewire("App\Livewire\Components\Counter")
+
+
+
+    <script>
+        let snapshotElements=document.querySelectorAll('[wire\\:snapshot]');
+        snapshotElements.forEach(el=>{
+            let snapshot=JSON.parse(el.getAttribute('wire:snapshot'));
+            console.log(snapshot)
+        })
+    </script>
 </body>
 
 </html>
