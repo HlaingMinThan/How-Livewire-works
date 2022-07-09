@@ -27,7 +27,7 @@
 </head>
 
 <body>
-    @livewire("App\Livewire\Components\Counter")
+    @livewire("App\Livewire\Components\Todo")
     <script src="/livewire.js"></script>
 </body>
 
