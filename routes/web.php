@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/livewire', function () {
+    dd(request()->all());
+});
 Route::get('/', function () {
     return view('welcome');
 });
