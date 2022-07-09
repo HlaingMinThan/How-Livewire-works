@@ -27,5 +27,5 @@ async function sendRequest(el, payload) {
     let response = await res.json();
     let { html, snapshot: newSnapshot } = response;
     el.__livewire = newSnapshot;
-    el.innerHTML = html;//need to update intelligently
+    Alpine.morph(el.firstElementChild,html)
 }
