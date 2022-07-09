@@ -9,7 +9,7 @@ class Counter
 
     public function increment()
     {
-        $this->count = $this->count + 1;
+        $this->count++;
     }
 
     public function render()

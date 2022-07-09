@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/livewire', function () {
-    dd(request()->all());
+
+    $livewire = new Livewire;
+
+    $component = $livewire->fromSnapshot(request('snapshot'));
+    if ($method = request('callMethod')) {
+        $livewire->callMethod($component, $method);
+    }
+
+    [$html, $snapshot] = $livewire->toSnapshot($component);
+    return ['html' => $html, 'snapshot' => $snapshot];
+    //return html and snapshot;
 });
 Route::get('/', function () {
     return view('welcome');

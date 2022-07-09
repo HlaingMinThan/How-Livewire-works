@@ -8,27 +8,63 @@ use ReflectionProperty;
 
 class Livewire
 {
+    public function setProperties($component, $properties)
+    {
+        foreach ($properties as $key => $value) {
+            $component->{$key} = $value;
+        }
+    }
     public function getProperties($component)
     {
         $properties = [];
         $class = new ReflectionClass($component);
         foreach ($class->getProperties(ReflectionProperty::IS_PUBLIC) as $eachProperty) {
-            $properties[$eachProperty->getName()] = $eachProperty->getValue(new $component);
+            $properties[$eachProperty->getName()] = $eachProperty->getValue($component);
         }
         return $properties;
     }
 
-    public function initialRender($component)
+    /**
+     * from snapshot to component
+     */
+    public function fromSnapshot($snapshot)
     {
-        $class = new $component;
+        $class = $snapshot['class'];
+        $data = $snapshot['data'];
+
+        $component = new $class;
+
+        $this->setProperties($component, $data);
+
+        return $component;
+    }
+
+    /**
+     * from component to snapshot
+     */
+    public function toSnapshot($component)
+    {
         $html = Blade::render(
-            $class->render(),
-            $this->getProperties($component)
+            $component->render(),
+            $properties = $this->getProperties($component)
         );
-        $data = ['class' => get_class($class), 'data' => $this->getProperties($component)];
-        $data = json_encode($data);
+        $snapshot = ['class' => get_class($component), 'data' => $properties];
+
+        return [$html, $snapshot];
+    }
+
+    public function callMethod($component, $method)
+    {
+        $component->{$method}();
+    }
+
+    public function initialRender($namespace)
+    {
+        $component = new $namespace;
+        [$html, $snapshot] = $this->toSnapshot($component);
+        $snapshotAttr = json_encode($snapshot);
         return "
-            <div wire:snapshot='$data'>
+            <div wire:snapshot='$snapshotAttr'>
                 {$html}
             </div>
         ";
