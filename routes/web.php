@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/livewire', function () {
-
     $livewire = new Livewire;
 
     $component = $livewire->fromSnapshot(request('snapshot'));
