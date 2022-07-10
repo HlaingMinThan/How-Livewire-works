@@ -6,7 +6,7 @@ use App\Livewire;
 
 class Todo extends Livewire
 {
-    public $todo = "hello...";
+    public $todo = "";
     public $todos = [
         'one',
         'two',
