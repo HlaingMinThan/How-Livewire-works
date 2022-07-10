@@ -67,7 +67,7 @@ class Livewire
     public function toSnapshot($component)
     {
         $html = Blade::render(
-            $component->render(),
+            File::get($component->render()->getPath()),
             $properties = $this->getProperties($component)
         );
         [$properties, $meta] = $this->dehydrateProperties($properties);
@@ -127,12 +127,5 @@ class Livewire
                 {$html}
             </div>
         ";
-    }
-
-    public function render()
-    {
-        // $this is the object calling from component class because of extending
-        $fileName = (new \ReflectionClass($this))->getShortName();
-        return File::get(resource_path() . '/views/livewire/components/' . $fileName . '.blade.php');
     }
 }

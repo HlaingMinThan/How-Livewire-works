@@ -3,6 +3,7 @@
 namespace App\Livewire\Components;
 
 use App\Livewire;
+use Illuminate\Support\Facades\File;
 
 class Todo extends Livewire
 {
@@ -28,5 +29,11 @@ class Todo extends Livewire
     public function updatedTodo()
     {
         $this->todo = strtoupper($this->todo);
+    }
+
+
+    public function render()
+    {
+        return view('livewire.components.Todo');
     }
 }
