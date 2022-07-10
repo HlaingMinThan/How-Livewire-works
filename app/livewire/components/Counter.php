@@ -13,4 +13,9 @@ class Counter extends Livewire
     {
         $this->count++;
     }
+
+    public function render()
+    {
+        return view('livewire.components.counter');
+    }
 }

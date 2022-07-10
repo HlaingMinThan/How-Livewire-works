@@ -28,10 +28,12 @@ class Livewire
     }
 
     /**
-     * from snapshot to component
+     * from snapshot to component (from javascript to php)
      */
     public function fromSnapshot($snapshot)
     {
+        $this->verifyCheckSum($snapshot); //protect client side attack
+
         $class = $snapshot['class'];
         $data = $snapshot['data'];
         $meta = $snapshot['meta'];
@@ -62,7 +64,7 @@ class Livewire
     }
 
     /**
-     * from component to snapshot
+     * from component to snapshot (from php to javascript)
      */
     public function toSnapshot($component)
     {
@@ -74,7 +76,30 @@ class Livewire
 
         $snapshot = ['class' => get_class($component), 'data' => $properties, 'meta' => $meta];
 
+        //create a unique token for serverside snapshot
+        $snapshot['checkSum'] = $this->generateCheckSum($snapshot);
+
         return [$html, $snapshot];
+    }
+
+    /**
+     * create a unique token
+     */
+    public function generateCheckSum($snapshot)
+    {
+        return md5(json_encode($snapshot));
+    }
+
+    public function verifyCheckSum($snapshot)
+    {
+        //temporary store the checkSum
+        $checkSum = $snapshot['checkSum'];
+
+        unset($snapshot['checkSum']); //unset because of the checkSum is created by class,data,meta(snapshot)
+
+        if ($checkSum !== $this->generateCheckSum($snapshot)) {
+            abort(403, 'stop hacking me');
+        }
     }
 
     /**
