@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Components;
 
-use App\Livewire;
-use Illuminate\Support\Facades\File;
-
-class Todo extends Livewire
+class Todo
 {
     public $todo = "";
     public $todos;
