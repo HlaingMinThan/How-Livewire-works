@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
 use ReflectionProperty;
+use Illuminate\Support\Str;
 
 class Livewire
 {
@@ -62,11 +63,22 @@ class Livewire
     public function propertyUpdate($component, $property, $value)
     {
         $component->{$property} = $value;
+        $updatePropertyMethod = 'updated' . Str::title($property);
+
+        //support update property hook
+        if (method_exists($component, $updatePropertyMethod)) {
+            $component->{$updatePropertyMethod}();
+        }
     }
 
     public function initialRender($namespace)
     {
         $component = new $namespace;
+
+        if (method_exists($component, 'mount')) {
+            $component->mount();
+        }
+
         [$html, $snapshot] = $this->toSnapshot($component);
         $snapshotAttr = json_encode($snapshot);
         return "
