@@ -6,7 +6,7 @@ use App\Livewire;
 
 class Todo extends Livewire
 {
-
+    public $todo = "hello...";
     public $todos = [
         'one',
         'two',
@@ -15,6 +15,8 @@ class Todo extends Livewire
 
     public function addTodo()
     {
-        $this->todos[] = 'new todo';
+        $this->todos[] = $this->todo;
+
+        $this->todo = "";
     }
 }

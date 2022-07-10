@@ -3,7 +3,27 @@ snapshotElements.forEach((el) => {
     let snapshot = JSON.parse(el.getAttribute("wire:snapshot"));
     el.__livewire = snapshot;
     initWireClick(el);
+    initWireModel(el);
 });
+
+function initWireModel(el) {
+    //set input data
+    setServerInputsValues(el)
+    //update input data on server side
+    el.addEventListener("input", (inputEl) => {
+        if (!inputEl.target.hasAttribute("wire:model")) return;
+        //this is the wire:model handler
+        sendRequest(el, { propertyUpdate:[inputEl.target.getAttribute('wire:model'),inputEl.target.value]});
+    });
+}
+
+function setServerInputsValues(el){
+    let inputs=el.querySelectorAll('[wire\\:model]');
+    inputs.forEach(input=>{
+        let propertyName=input.getAttribute('wire:model');
+        input.value=el.__livewire.data[propertyName]
+    })
+}
 
 function initWireClick(el) {
     el.addEventListener("click", (clickEl) => {
@@ -28,4 +48,7 @@ async function sendRequest(el, payload) {
     let { html, snapshot: newSnapshot } = response;
     el.__livewire = newSnapshot;
     Alpine.morph(el.firstElementChild,html)
+
+    //set the input values at the end (because we can't know what input value can change on server)
+    setServerInputsValues(el)
 }

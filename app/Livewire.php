@@ -59,6 +59,11 @@ class Livewire
         $component->{$method}();
     }
 
+    public function propertyUpdate($component, $property, $value)
+    {
+        $component->{$property} = $value;
+    }
+
     public function initialRender($namespace)
     {
         $component = new $namespace;

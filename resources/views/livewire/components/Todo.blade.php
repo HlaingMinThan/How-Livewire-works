@@ -1,6 +1,7 @@
 <div>
     <h1>Todos</h1>
     <input
+        wire:model="todo"
         type="text"
         placeholder="type here ...."
     >
