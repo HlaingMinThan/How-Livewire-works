@@ -87,7 +87,7 @@ class Livewire
      */
     public function generateCheckSum($snapshot)
     {
-        return md5(json_encode($snapshot));
+        return hash('sha512', json_encode($snapshot));
     }
 
     public function verifyCheckSum($snapshot)
