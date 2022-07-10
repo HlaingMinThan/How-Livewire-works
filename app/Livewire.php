@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use ReflectionClass;
@@ -33,12 +34,31 @@ class Livewire
     {
         $class = $snapshot['class'];
         $data = $snapshot['data'];
+        $meta = $snapshot['meta'];
 
         $component = new $class;
+        $properties = $this->hydrateProperties($data, $meta);
 
-        $this->setProperties($component, $data);
+        $this->setProperties($component, $properties);
 
         return $component;
+    }
+
+    /**
+     *  comeback from javascript change proper format of data
+     */
+    public function hydrateProperties($properties, $meta)
+    {
+        $data = [];
+
+        foreach ($properties as $key => $value) {
+            if (isset($meta[$key]) && $meta[$key] ===  'collection') {
+                $value = collect($value);
+            }
+            $data[$key] = $value;
+        }
+
+        return $data;
     }
 
     /**
@@ -50,9 +70,30 @@ class Livewire
             $component->render(),
             $properties = $this->getProperties($component)
         );
-        $snapshot = ['class' => get_class($component), 'data' => $properties];
+        [$properties, $meta] = $this->dehydrateProperties($properties);
+
+        $snapshot = ['class' => get_class($component), 'data' => $properties, 'meta' => $meta];
 
         return [$html, $snapshot];
+    }
+
+    /**
+     *  to pass javascript
+     */
+    public function dehydrateProperties($properties)
+    {
+        $data = [];
+        $meta = [];
+
+        foreach ($properties as $key => $value) {
+            if ($value instanceof Collection) {
+                $data[$key] = $value->toArray(); // to pass javascript as a array
+                $meta[$key] = 'collection';
+            }
+            $data[$key] = $value;
+        }
+
+        return [$data, $meta];
     }
 
     public function callMethod($component, $method)

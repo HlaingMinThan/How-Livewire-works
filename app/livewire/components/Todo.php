@@ -7,22 +7,22 @@ use App\Livewire;
 class Todo extends Livewire
 {
     public $todo = "";
-    public $todos = [];
+    public $todos;
 
     public function addTodo()
     {
-        $this->todos[] = $this->todo;
+        $this->todos->push($this->todo);
 
         $this->todo = "";
     }
 
     public function mount()
     {
-        $this->todos = [
+        $this->todos = collect([
             'one',
             'two',
             'three'
-        ];
+        ]);
     }
 
     public function updatedTodo()
