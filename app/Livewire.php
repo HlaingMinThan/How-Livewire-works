@@ -45,7 +45,7 @@ class Livewire
     }
 
     /**
-     *  comeback from javascript change proper format of data
+     *  comeback from javascript change proper format of php data
      */
     public function hydrateProperties($properties, $meta)
     {
