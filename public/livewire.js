@@ -9,8 +9,8 @@ snapshotElements.forEach((el) => {
 function initWireModel(el) {
     //set input data
     setServerInputsValues(el)
-    //update input data on server side
-    el.addEventListener("input", (inputEl) => {
+    //update input data on server side and change === wire:model.lazy
+    el.addEventListener("change", (inputEl) => {
         if (!inputEl.target.hasAttribute("wire:model")) return;
         //this is the wire:model handler
         sendRequest(el, { propertyUpdate:[inputEl.target.getAttribute('wire:model'),inputEl.target.value]});
