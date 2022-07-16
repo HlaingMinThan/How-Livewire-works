@@ -2,12 +2,9 @@
 
 namespace App\Livewire\Components;
 
-use App\Livewire;
-
-class Counter extends Livewire
+class Counter
 {
     public $count = 8;
-    public $fee = 'price';
 
     public function increment()
     {

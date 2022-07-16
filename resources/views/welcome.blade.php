@@ -28,6 +28,7 @@
 
 <body>
     @livewire("App\Livewire\Components\Todo")
+    <script src="/morph.js"></script>
     <script src="/livewire.js"></script>
 </body>
 

@@ -48,7 +48,7 @@ async function sendRequest(el, payload) {
     let response = await res.json();
     let { html, snapshot: newSnapshot } = response;
     el.__livewire = newSnapshot;
-    Alpine.morph(el.firstElementChild,html)
+    morph(el.firstElementChild,html)
 
     //set the input values at the end (because we can't know what input value can change on server)
     setServerInputsValues(el)
